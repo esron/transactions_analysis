@@ -23,7 +23,7 @@ class FileUploadController extends Controller
 
     public function store(CSVUploadRequest $request)
     {
-        $file = $request->file('file');
+        $file = $request->validated()['file'];
         $name = $file->getClientOriginalName();
         $sizeInMb = $this->convertBytesToMegaBytes($file->getSize());
         Log::info("File name: $name, file size $sizeInMb mb");
