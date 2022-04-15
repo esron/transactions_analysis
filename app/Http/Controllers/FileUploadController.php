@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CSVUploadRequest;
 use Illuminate\Support\Facades\Log;
 
 class FileUploadController extends Controller
@@ -21,15 +21,13 @@ class FileUploadController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(CSVUploadRequest $request)
     {
-        $validatedData = $request->validate([
-            'file' => 'required|file|mimes:txt,csv|max:2048',
-        ]);
-        $name = $validatedData['file']->getClientOriginalName();
-        $sizeInMb = $this->convertBytesToMegaBytes($validatedData['file']->getSize());
+        $file = $request->file('file');
+        $name = $file->getClientOriginalName();
+        $sizeInMb = $this->convertBytesToMegaBytes($file->getSize());
         Log::info("File name: $name, file size $sizeInMb mb");
-        $this->readCsvFile($validatedData['file']->path());
+        $this->readCsvFile($file->path());
         return view('welcome', ['message' => "File $name successfully uploaded!"]);
     }
 }
