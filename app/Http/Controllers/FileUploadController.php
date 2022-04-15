@@ -9,18 +9,27 @@ class FileUploadController extends Controller
 {
     private function convertBytesToMegaBytes(float|int $megabytes): float
     {
-        return $megabytes / (64.0);
+        return $megabytes / (1e6);
+    }
+
+    private function readCsvFile(string $path): void
+    {
+        $handler = fopen($path, 'r');
+        while (($line = fgetcsv($handler, 1000)) !== false) {
+            $lineString = join(',', $line);
+            Log::info($lineString);
+        }
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'file' => 'required|file|mimes:txt|max:2048',
+            'file' => 'required|file|mimes:txt,csv|max:2048',
         ]);
-        $validatedData['file']->store('public/files');
         $name = $validatedData['file']->getClientOriginalName();
         $sizeInMb = $this->convertBytesToMegaBytes($validatedData['file']->getSize());
-        Log::info("File name: $name, file size $sizeInMb megabytes");
-        return "File name: $name, file size $sizeInMb megabytes";
+        Log::info("File name: $name, file size $sizeInMb mb");
+        $this->readCsvFile($validatedData['file']->path());
+        return "File name: $name, file size $sizeInMb mb";
     }
 }
