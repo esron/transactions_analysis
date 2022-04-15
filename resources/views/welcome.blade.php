@@ -7,23 +7,28 @@
 <body>
     <div class="container mt-4">
         <h1 class="text-center">IMPORTAR TRANSAÇÕES</h1>
-        <form method="POST" enctype="multipart/form-data" id="upload-file" action="{{ route('csv.upload') }}">
-            @csrf
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="mb-3">
-                        <input class="form-control" type="file" name="file" placeholder="Choose file" id="file">
-                        <label for="file" class="form-label">Selecionar o arquivo para realizar upload</label>
-                        @error('file')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                        @enderror
+        <div class="row">
+            <form method="POST" enctype="multipart/form-data" id="upload-file" action="{{ route('csv.upload') }}">
+                @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <input class="form-control" type="file" name="file" placeholder="Choose file" id="file">
+                            <label for="file" class="form-label">Selecionar o arquivo para realizar upload</label>
+                            @error('file')
+                            <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary" id="submit">Importar</button>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary" id="submit">Importar</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="row">
+            <p>{{ $message }}</p>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
