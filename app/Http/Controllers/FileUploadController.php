@@ -30,6 +30,6 @@ class FileUploadController extends Controller
         $sizeInMb = $this->convertBytesToMegaBytes($validatedData['file']->getSize());
         Log::info("File name: $name, file size $sizeInMb mb");
         $this->readCsvFile($validatedData['file']->path());
-        return "File name: $name, file size $sizeInMb mb";
+        return view('welcome', ['message' => "File $name successfully uploaded!"]);
     }
 }
