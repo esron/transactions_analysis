@@ -11,6 +11,13 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'origin_account_id',
+        'destiny_account_id',
+        'import_id',
+        'amount',
+    ];
+
     public function originAccount()
     {
         return $this->hasOne(Account::class);
