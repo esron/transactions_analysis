@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Import;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
@@ -71,6 +72,9 @@ class CSVUploadRequest extends FormRequest
         if ($date === false) {
             return false;
         }
+        if ($this->dateAlreadyImported($date)) {
+            $validator->errors()->add('file', "Transactions for {$date->format('Y-m-d')} already imported");
+        }
         $this->merge(['date' => $date]);
         $lines = [$firstLine];
         while (($line = fgetcsv($handler, 1000)) !== false) {
@@ -104,5 +108,10 @@ class CSVUploadRequest extends FormRequest
     private function isLineComplete(array $line): bool
     {
         return ((bool) array_search("", $line)) === false;
+    }
+
+    private function dateAlreadyImported(Carbon $date): bool
+    {
+        return Import::firstWhere('transactions_date', $date->format('Y-m-d')) !== null;
     }
 }
