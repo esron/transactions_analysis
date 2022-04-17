@@ -34,6 +34,31 @@
         @endif
         </div>
     </div>
+    @if (isset($transactions) && $transactions)
+    <div class="container mt-4">
+        <h1 class="text-center">TRANSAÇÕES IMPORTADAS</h1>
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>DATA TRANSAÇÕES</th>
+                        <th>DATA IMPORTAÇÃO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($transactions as $transaction)
+                    <tr>
+                        <td>{{ $transaction->import->transactions_date }}</td>
+                        <td>{{ $transaction->import->created_at }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="row mt-3">
+        </div>
+    </div>
+    @endif
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>
