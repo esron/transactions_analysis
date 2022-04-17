@@ -10,6 +10,8 @@ class Import extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['transactions_date'];
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
