@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('origin_account')->constrained('accounts');
-            $table->foreignId('destiny_account')->constrained('accounts');
+            $table->foreignId('origin_account_id')->constrained('accounts');
+            $table->foreignId('destiny_account_id')->constrained('accounts');
+            $table->foreignId('import_id')->constrained('imports');
             $table->integer('amount');
             $table->timestamps();
         });
