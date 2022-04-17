@@ -20,16 +20,16 @@ class Transaction extends Model
 
     public function originAccount()
     {
-        return $this->hasOne(Account::class);
+        return $this->belongsTo(Account::class);
     }
 
     public function destinyAccount()
     {
-        return $this->hasOne(Account::class);
+        return $this->belongsTo(Account::class);
     }
 
     public function import()
     {
-        return $this->hasOne(Import::class);
+        return $this->belongsTo(Import::class);
     }
 }
