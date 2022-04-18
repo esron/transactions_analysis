@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::post('/csv_upload', [FileUploadController::class, 'store'])->name('csv.upload');
+
+Route::apiResource('users', UserController::class);
