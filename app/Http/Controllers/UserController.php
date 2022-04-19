@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCreated;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -39,6 +42,14 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users',
         ]);
+        $password = $this->generateNumericStringWithLength(6);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($password),
+        ]);
+        Mail::to($user)->send(new UserCreated($user->name, $password));
+        return redirect()->route('users.show', [$user]);
     }
 
     /**
@@ -84,5 +95,15 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    private function generateNumericStringWithLength(int $length): string
+    {
+        $characters = collect()->range(0, 9)->map(fn($c) => (string) $c);
+        $password = '';
+        for ($i=0; $i < $length; $i++) {
+            $password .= $characters->random();
+        }
+        return $password;
     }
 }
