@@ -20,4 +20,4 @@ Route::get('/', [HomeController::class, 'index']);
 
 Route::post('/csv_upload', [FileUploadController::class, 'store'])->name('csv.upload');
 
-Route::apiResource('users', UserController::class);
+Route::resource('users', UserController::class);
