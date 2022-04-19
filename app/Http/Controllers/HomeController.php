@@ -10,6 +10,6 @@ class HomeController extends Controller
     public function index()
     {
         $transactions = Transaction::with(['originAccount', 'destinyAccount', 'import'])->get();
-        return view('welcome', ['transactions' => $transactions]);
+        return view('home', ['transactions' => $transactions]);
     }
 }
