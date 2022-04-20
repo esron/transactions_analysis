@@ -95,7 +95,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        User::destroy($user->id);
+
+        return redirect()->back();
     }
 
     private function generateNumericStringWithLength(int $length): string
