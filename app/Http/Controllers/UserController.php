@@ -49,7 +49,7 @@ class UserController extends Controller
             'password' => Hash::make($password),
         ]);
         Mail::to($user)->send(new UserCreated($user->name, $password));
-        return redirect()->route('users.show', [$user]);
+        return redirect()->route('users.index');
     }
 
     /**
