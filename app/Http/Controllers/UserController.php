@@ -17,7 +17,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::whereNot('email', env('ADMIN_EMAIL'))->get();
+        return view('components.users.index', ['users' => $users]);
     }
 
     /**
