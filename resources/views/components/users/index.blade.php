@@ -44,7 +44,7 @@
                     <div class="modal-body"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger">Remover</button>
+                        <button type="button" class="btn btn-danger" id="removeUserButton">Remover</button>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
     </div>
     <script>
         var removeUserModal = document.getElementById('removeUserModal')
-            removeUserModal.addEventListener('show.bs.modal', function (event) {
+        removeUserModal.addEventListener('show.bs.modal', function (event) {
             // Button that triggered the modal
             var button = event.relatedTarget
             // Extract info from data-bs-* attributes
