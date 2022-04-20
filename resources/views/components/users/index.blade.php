@@ -25,6 +25,7 @@
                             data-bs-target="#removeUserModal"
                             data-bs-user-name="{{ $user->name }}"
                             data-bs-user-id="{{ $user->id }}"
+                            data-bs-remove-user-route="{{ route('users.destroy', [$user]) }}"
                         >
                             Remover
                         </button>
@@ -43,24 +44,33 @@
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" id="removeUserButton">Remover</button>
+                        <form id="removeUserForm" action="" method="post">
+                            @method('DELETE')
+                            @csrf
+                            <input id="userId" name="id" hidden value="">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-danger" id="removeUserButton">Remover</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        var removeUserModal = document.getElementById('removeUserModal')
-        removeUserModal.addEventListener('show.bs.modal', function (event) {
+        const removeUserModal = document.getElementById('removeUserModal')
+        removeUserModal.addEventListener('show.bs.modal', (event) => {
             // Button that triggered the modal
-            var button = event.relatedTarget
+            const button = event.relatedTarget
+
             // Extract info from data-bs-* attributes
-            var userName = button.getAttribute('data-bs-user-name')
-            var userId = button.getAttribute('data-bs-user-id')
+            const userName = button.getAttribute('data-bs-user-name')
+            const userId = button.getAttribute('data-bs-user-id')
+            const removeUserRoute = button.getAttribute('data-bs-remove-user-route')
 
             // Update the modal's content.
-            var modalBody = removeUserModal.querySelector('.modal-body')
+            const modalBody = removeUserModal.querySelector('.modal-body')
+            const removeUserForm = document.getElementById('removeUserForm')
+            removeUserForm.setAttribute('action', removeUserRoute)
             modalBody.textContent = `Deseja mesmo remover o usuário ${userName}`
         })
     </script>
