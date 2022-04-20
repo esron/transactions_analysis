@@ -1,6 +1,9 @@
 <x-layout>
     <div class="container mt-4">
         <h1 class="text-center">USUÁRIOS CADASTRADOS</h1>
+        @if($users->count() === 0)
+            <h2 class="mt-5 text-center">Nenhum usuário foi encontrado</h2>
+        @else
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -34,6 +37,7 @@
                 @endforeach
             </tbody>
         </table>
+        @endif
         <!-- Modal -->
         <div class="modal fade" id="removeUserModal" tabindex="-1" role="dialog" aria-labelledby="removeUserModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
