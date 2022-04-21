@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::view('/login', 'components.auth.login');
+Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.login');
+Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/', [HomeController::class, 'index']);
 
