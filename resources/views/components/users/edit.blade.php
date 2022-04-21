@@ -1,6 +1,9 @@
 <x-layout>
     <div class="container mt-4">
         <h1 class="text-center">EDITAR USUÁRIO</h1>
+        @if(session('message'))
+        <div class="alert alert-success">{{ session('message') }}</div>
+        @endif
         <form method="POST" id="user-edit" action="{{ route('users.update', [$user]) }}">
             @method('PUT')
             @csrf
