@@ -100,6 +100,9 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->abortIfAdminUser($user, 'excluído');
+        if (Auth::class === $user->id) {
+            abort(403, "Um usuário não pode excluir a si próprio");
+        }
         User::destroy($user->id);
         return back();
     }
