@@ -1,6 +1,9 @@
 <x-layout>
     <div class="container mt-4">
         <h1 class="text-center">USUÁRIOS CADASTRADOS</h1>
+        <div class="d-flex justify-content-center">
+            <a href="{{ route('users.create') }}" class="btn btn-primary">Adicionar novo usuário</a>
+        </div>
         @if($users->count() === 0)
             <h2 class="mt-5 text-center">Nenhum usuário foi encontrado</h2>
         @else
