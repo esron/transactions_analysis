@@ -24,6 +24,22 @@
                     <td>{{ $user->email }}</td>
                     <td>
                         <a href="{{ route('users.edit', [$user]) }}" class="btn btn-primary">Editar</a>
+                        @if(Auth::user()->id === $user->id)
+                        <span
+                            tabindex="0"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Você não pode excluir seu usuário"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                disabled
+                            >
+                                Remover
+                            </button>
+                        </span>
+                        @else
                         <button
                             type="button"
                             class="btn btn-danger"
@@ -35,6 +51,7 @@
                         >
                             Remover
                         </button>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
