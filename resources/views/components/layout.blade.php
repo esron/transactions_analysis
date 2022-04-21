@@ -22,7 +22,8 @@
                         <a class="nav-link @if(Route::currentRouteName() == 'users.index') active @endif" href="{{ route('users.index') }}">Usuários</a>
                     </li>
                 </ul>
-                <form class="d-flex">
+                <form class="d-flex" method="POST" action="{{ route('logout') }}">
+                    @csrf
                     <button class="btn btn-primary" type="submit">Sair</button>
                 </form>
             </div>
