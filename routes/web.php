@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/login', 'components.auth.login');
+Route::view('/login', 'components.auth.login')->name('login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.login');
-Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/', [HomeController::class, 'index']);
-
-Route::post('/csv_upload', [FileUploadController::class, 'store'])->name('csv.upload');
-
-Route::resource('users', UserController::class)->except(['show']);
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/', [HomeController::class, 'index']);
+    Route::post('/csv_upload', [FileUploadController::class, 'store'])->name('csv.upload');
+    Route::resource('users', UserController::class)->except(['show']);
+});
