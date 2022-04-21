@@ -93,6 +93,13 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id),
             ],
         ]);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return back()->with('message', 'Usuário editado com sucesso');
     }
 
     /**
