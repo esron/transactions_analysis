@@ -22,7 +22,7 @@ Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.login
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::post('/csv_upload', [FileUploadController::class, 'store'])->name('csv.upload');
     Route::resource('users', UserController::class)->except(['show']);
 });
