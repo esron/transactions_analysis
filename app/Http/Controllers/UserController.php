@@ -62,6 +62,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->abortIfAdminUser($user, 'editado');
         return view('components.users.edit', ['user' => $user]);
     }
 
@@ -74,6 +75,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $this->abortIfAdminUser($user, 'editado');
         $request->validate([
             'name' => 'required|max:255',
             'email' => [
@@ -97,9 +99,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($user->email === env('ADMIN_EMAIL')) {
-            return abort(403, "O usuário $user->name não pode ser excluído");
-        }
+        $this->abortIfAdminUser($user, 'excluído');
         User::destroy($user->id);
         return back();
     }
@@ -112,5 +112,12 @@ class UserController extends Controller
             $password .= $characters->random();
         }
         return $password;
+    }
+
+    private function abortIfAdminUser(User $user, string $verb)
+    {
+        if ($user->email === env('ADMIN_EMAIL')) {
+            abort(403, "O usuário $user->name não pode ser $verb");
+        }
     }
 }
