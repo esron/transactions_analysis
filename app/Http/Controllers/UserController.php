@@ -82,12 +82,10 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id),
             ],
         ]);
-
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
         ]);
-
         return back()->with('message', 'Usuário editado com sucesso');
     }
 
@@ -99,9 +97,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->email === env('ADMIN_EMAIL')) {
+            return abort(403, "O usuário $user->name não pode ser excluído");
+        }
         User::destroy($user->id);
-
-        return redirect()->back();
+        return back();
     }
 
     private function generateNumericStringWithLength(int $length): string
