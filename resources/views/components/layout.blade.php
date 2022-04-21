@@ -16,10 +16,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Importações</a>
+                        <a class="nav-link @if(Route::currentRouteName() == 'home') active @endif" aria-current="page" href="{{ route('home') }}">Importações</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Usuários</a>
+                        <a class="nav-link @if(Route::currentRouteName() == 'users.index') active @endif" href="{{ route('users.index') }}">Usuários</a>
                     </li>
                 </ul>
                 <form class="d-flex">
