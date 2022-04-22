@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Import;
 
 class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Import  $import
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Import $import)
     {
         return view('components.transactions.index');
     }
