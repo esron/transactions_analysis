@@ -12,6 +12,10 @@ class Import extends Model
 
     protected $fillable = ['transactions_date'];
 
+    protected $casts = [
+        'transactions_date' => 'date',
+    ];
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
