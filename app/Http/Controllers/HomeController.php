@@ -2,19 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
-use Illuminate\Http\Request;
+use App\Models\Import;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::with([
-            'originAccount',
-            'destinyAccount',
-            'import',
-            'user',
-        ])->get();
-        return view('home', ['transactions' => $transactions]);
+        $imports = Import::with(['user'])->get();
+        return view('home', ['imports' => $imports]);
     }
 }
