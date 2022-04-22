@@ -26,5 +26,35 @@
             </div>
         </div>
         <h2 class="text-center mt-4">TRANSAÇÕES IMPORTADAS</h2>
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center" colspan="3">ORIGEM</th>
+                    <th scope="col" class="text-center" colspan="3">DESTINO</th>
+                    <th scope="col" class="text-center align-middle" rowspan="2">VALOR</th>
+                </tr>
+                <tr>
+                    <th scope="col" class="text-center">BANCO</th>
+                    <th scope="col" class="text-center">AGÊNCIA</th>
+                    <th scope="col" class="text-center">CONTA</th>
+                    <th scope="col" class="text-center">BANCO</th>
+                    <th scope="col" class="text-center">AGÊNCIA</th>
+                    <th scope="col" class="text-center">CONTA</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($import->transactions as $transaction)
+                <tr>
+                    <td>{{ $transaction->originAccount->bank_name }}</td>
+                    <td>{{ $transaction->originAccount->branch }}</td>
+                    <td>{{ $transaction->originAccount->number }}</td>
+                    <td>{{ $transaction->destinyAccount->bank_name }}</td>
+                    <td>{{ $transaction->destinyAccount->branch }}</td>
+                    <td>{{ $transaction->destinyAccount->number }}</td>
+                    <td class="d-flex flex-row-reverse">R$ {{ $transaction->amount }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </x-layout>
