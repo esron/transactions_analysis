@@ -48,7 +48,7 @@
                         <td>{{ $import->created_at }}</td>
                         <td>{{ $import->user->name }}</td>
                         <td>
-                            <a href="#" class="btn btn-primary">Detalhes</a>
+                            <a href="{{ route('transactions.index', [$import]) }}" class="btn btn-primary">Detalhes</a>
                         </td>
                     </tr>
                     @endforeach
