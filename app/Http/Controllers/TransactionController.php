@@ -14,7 +14,11 @@ class TransactionController extends Controller
      */
     public function index(Import $import)
     {
-        $import->load(['transactions', 'user']);
+        $import->load([
+            'transactions.originAccount',
+            'transactions.destinyAccount',
+            'user'
+        ]);
         return view('components.transactions.index', ['import' => $import]);
     }
 }
