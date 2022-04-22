@@ -14,6 +14,7 @@ class TransactionController extends Controller
      */
     public function index(Import $import)
     {
-        return view('components.transactions.index');
+        $import->load(['transactions', 'user']);
+        return view('components.transactions.index', ['import' => $import]);
     }
 }
