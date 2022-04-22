@@ -51,7 +51,7 @@
                     <td>{{ $transaction->destinyAccount->bank_name }}</td>
                     <td>{{ $transaction->destinyAccount->branch }}</td>
                     <td>{{ $transaction->destinyAccount->number }}</td>
-                    <td class="d-flex flex-row-reverse">R$ {{ $transaction->amount }}</td>
+                    <td class="d-flex flex-row-reverse">{{ $transaction->formattedAmount }}</td>
                 </tr>
                 @endforeach
             </tbody>
