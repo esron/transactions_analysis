@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\Import;
 use App\Models\Transaction;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class FileUploadController extends Controller
@@ -31,6 +32,7 @@ class FileUploadController extends Controller
     {
         $import = Import::create([
             'transactions_date' => $date,
+            'user_id' => Auth::user()->id,
         ]);
         foreach ($transactions as $transaction) {
             $transaction = collect($transaction);
