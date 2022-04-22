@@ -28,22 +28,28 @@
         @endif
         </div>
     </div>
-    @if (isset($transactions) && $transactions)
+    @if (isset($imports) && $imports)
     <div class="container mt-4">
-        <h1 class="text-center">TRANSAÇÕES IMPORTADAS</h1>
+        <h1 class="text-center">IMPORTAÇÕES REALIZADAS</h1>
         <div class="row">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>DATA TRANSAÇÕES</th>
                         <th>DATA IMPORTAÇÃO</th>
+                        <th>IMPORTADO POR</th>
+                        <th>AÇÕES</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($transactions as $transaction)
+                    @foreach ($imports as $import)
                     <tr>
-                        <td>{{ $transaction->import->transactions_date }}</td>
-                        <td>{{ $transaction->import->created_at }}</td>
+                        <td>{{ $import->transactions_date }}</td>
+                        <td>{{ $import->created_at }}</td>
+                        <td>{{ $import->user->name }}</td>
+                        <td>
+                            <a href="#" class="btn btn-primary">Detalhes</a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
