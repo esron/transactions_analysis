@@ -3,7 +3,6 @@
 namespace Tests\Feature\app\Console\Commands;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class CreateDefaultUserCommandTest extends TestCase
