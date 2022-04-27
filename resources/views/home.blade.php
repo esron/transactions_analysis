@@ -2,7 +2,7 @@
     <div class="container mt-4">
         <h1 class="text-center">IMPORTAR TRANSAÇÕES</h1>
         <div class="row">
-            <form method="POST" enctype="multipart/form-data" id="upload-file" action="{{ route('csv.upload') }}">
+            <form method="POST" enctype="multipart/form-data" id="upload-file" action="{{ route('file/upload') }}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">

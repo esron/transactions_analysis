@@ -24,7 +24,7 @@ Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.login
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('/csv_upload', [FileUploadController::class, 'store'])->name('csv.upload');
+    Route::post('/file-upload', [FileUploadController::class, 'store'])->name('file/upload');
     Route::resource('users', UserController::class)->except(['show']);
     Route::get('/transactions/{import}', [TransactionController::class, 'index'])->name('transactions.index');
 });
