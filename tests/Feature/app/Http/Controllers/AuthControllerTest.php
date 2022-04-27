@@ -11,11 +11,6 @@ class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     public function testCanSeeAuthForm()
     {
         $response = $this->get('/login');
