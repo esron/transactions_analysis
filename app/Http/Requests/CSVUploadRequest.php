@@ -91,6 +91,7 @@ class CSVUploadRequest extends FormRequest
             $lines[] = $line;
             Log::info(join(',', $line));
         }
+        fclose($handler);
         return $lines;
     }
 
