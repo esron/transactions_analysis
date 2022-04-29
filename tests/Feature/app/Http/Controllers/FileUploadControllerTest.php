@@ -5,6 +5,8 @@ namespace Tests\Feature\app\Http\Controllers;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class FileUploadControllerTest extends TestCase
@@ -28,10 +30,39 @@ class FileUploadControllerTest extends TestCase
             ->assertSee('Importar');
     }
 
-    public function testFileUploadValidations()
+    public function testFileUploadValidationsFileIsRequired()
     {
         $response = $this->actingAs($this->user)->post('/file-upload');
+        $response->assertStatus(302)
+            ->assertInvalid([
+                'file' => 'The file field is required.'
+            ]);
+    }
 
-        $response->assertStatus(422);
+    public function testFileUploadValidationsFileIsCsvOrTxt()
+    {
+        $file = UploadedFile::fake()->create('virus.exe', 1000);
+        $response = $this->actingAs($this->user)->post('/file-upload', [
+            'file' => $file,
+        ]);
+        $response->assertStatus(302)
+            ->assertInvalid([
+                'file' => 'The file must be a file of type: txt, csv.'
+            ]);
+    }
+
+    public function testFileUploadValidationInvalidFormatForDate()
+    {
+        $disk = 'temp';
+        Storage::fake($disk);
+        $file = UploadedFile::fake()->createWithContent('virus.exe', 'Hello world!');
+        $response = $this->actingAs($this->user)->post('/file-upload', [
+            'file' => $file,
+        ]);
+        Storage::disk($disk)->assertExists($file->hashName());
+        $response->assertStatus(302)
+            ->assertInvalid([
+                'file' => 'Invalid format for date on line 1'
+            ]);
     }
 }
