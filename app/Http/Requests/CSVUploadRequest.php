@@ -118,6 +118,6 @@ class CSVUploadRequest extends FormRequest
 
     private function dateAlreadyImported(Carbon $date): bool
     {
-        return Import::firstWhere('transactions_date', $date->format('Y-m-d')) !== null;
+        return Import::firstWhere('transactions_date', $date->startOfDay()) !== null;
     }
 }
