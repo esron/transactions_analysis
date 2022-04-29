@@ -7,10 +7,13 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Validator;
 
 class CSVUploadRequest extends FormRequest
 {
+    protected $fileDisk = 'temp';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -44,10 +47,12 @@ class CSVUploadRequest extends FormRequest
             if ($this->file === null) {
                 return false;
             }
-            $name = $this->file->getClientOriginalName();
+            $path = Storage::disk($this->fileDisk)
+                ->put($this->file->hashName(), $this->file->get());
             $validationResponse = $this->validateCSV($this->file->path(), $validator);
             if ($validationResponse === false) {
-                $validator->errors()->add('file', "Failed processing $name");
+                $validator->errors()
+                    ->add('file', "Failed processing {$this->file->getClientOriginalName()}");
                 return;
             }
             $this->merge(['file' => $validationResponse]);
