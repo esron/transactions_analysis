@@ -29,6 +29,10 @@ class TransactionControllerTest extends TestCase
         $response = $this->actingAs($this->user)
             ->get("/transactions/{$import->id}");
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSee('TRANSAÇÕES IMPORTADAS')
+            ->assertViewHas('import', function (Import $import) {
+                return $import->user->name == $this->user->name;
+            });
     }
 }
