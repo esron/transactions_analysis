@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\app\Http\Controllers;
 
+use App\Mail\UserCreated;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -94,6 +96,7 @@ class UserControllerTest extends TestCase
 
     public function testCanCreateAnUser()
     {
+        Mail::fake();
         $userData = User::factory()->make();
         $response = $this->actingAs($this->user)
             ->post('/users', [
@@ -107,5 +110,9 @@ class UserControllerTest extends TestCase
             'name' => $userData->name,
             'email' => $userData->email,
         ]);
+
+        Mail::assertSent(function (UserCreated $mail) use ($userData) {
+            return $mail->hasTo($userData->email);
+        });
     }
 }
