@@ -81,4 +81,21 @@ class UserControllerTest extends TestCase
             ],
         ];
     }
+
+    public function testCanCreateAnUser()
+    {
+        $userData = User::factory()->make();
+        $response = $this->actingAs($this->user)
+            ->post('/users', [
+                'name' => $userData->name,
+                'email' => $userData->email,
+            ]);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('users', [
+            'name' => $userData->name,
+            'email' => $userData->email,
+        ]);
+    }
 }
