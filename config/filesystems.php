@@ -47,7 +47,7 @@ return [
         'temp' => [
             'driver' => 'local',
             'root' => sys_get_temp_dir(),
-            'throw' => false,
+            'throw' => true,
         ],
 
         's3' => [
