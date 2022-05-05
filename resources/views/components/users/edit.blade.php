@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary" id="submit">Cadastrar</button>
+                    <button type="submit" class="btn btn-primary" id="submit">Salvar</button>
                 </div>
             </div>
         </form>
