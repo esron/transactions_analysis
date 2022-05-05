@@ -82,6 +82,16 @@ class UserControllerTest extends TestCase
         ];
     }
 
+    public function testCanSeeTheUserCreationForm()
+    {
+        $response = $this->actingAs($this->user)
+            ->get('/users/create');
+
+        $response->assertStatus(200)
+            ->assertSee('CADASTRAR NOVO USUÁRIO')
+            ->assertSee('Cadastrar');
+    }
+
     public function testCanCreateAnUser()
     {
         $userData = User::factory()->make();
