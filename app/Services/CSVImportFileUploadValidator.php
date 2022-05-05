@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
-use App\Services\Exceptions\FileNotFoundException;
+use App\Models\Import;
+use App\Services\Exceptions\AlreadyImportedException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class CSVImportFileUploadValidator implements ImportFileUploadValidator
 {
@@ -16,17 +19,15 @@ class CSVImportFileUploadValidator implements ImportFileUploadValidator
     public function readFile(): void
     {
         $lineNumber = 1;
-        if (file_exists($this->filePath) === false) {
-            throw new FileNotFoundException();
+        $fileContent = Storage::disk('temp')->get($this->filePath);
+        $transactionLines = $this->transform($fileContent);
+        $firstLine = $transactionLines->shift();
+        $fileDate = $this->getDateFromLine($firstLine);
+        if ($this->isDateAlreadyImported($fileDate)) {
+            throw new AlreadyImportedException();
         }
-        if (($handler = fopen($this->filePath, 'r')) === false) {
-            Log::error("Failed to open file in {$this->filePath}");
-        }
-        if (($firstLine = fgetcsv($handler, 1000)) === false) {
-            return;
-        }
-        $this->lines[] = $firstLine;
-        while (($line = fgetcsv($handler, 1000)) !== false) {
+        $this->lines = [$firstLine];
+        foreach ($transactionLines as $line) {
             $lineNumber++;
             $date = $this->getDateFromLine($line, $this->validator, $lineNumber);
             $isSameDay = $date->isSameDay($this->date);
@@ -37,7 +38,6 @@ class CSVImportFileUploadValidator implements ImportFileUploadValidator
             $this->lines[] = $line;
             Log::info(join(',', $line));
         }
-        fclose($handler);
     }
 
     public function getTransactions(): array
@@ -48,5 +48,20 @@ class CSVImportFileUploadValidator implements ImportFileUploadValidator
     private function getDateFromLine(array $line): Carbon
     {
         return Carbon::parse(last($line));
+    }
+
+    private function isDateAlreadyImported(Carbon $date): bool
+    {
+        return Import::firstWhere('transactions_date', $date->startOfDay()) !== null;
+    }
+
+    private function transform(string $content)
+    {
+        $lines = explode("\n", $content);
+        $transactions = collect();
+        foreach ($lines as $line) {
+            $transactions[] = explode(',', $line);
+        }
+        return $transactions;
     }
 }
