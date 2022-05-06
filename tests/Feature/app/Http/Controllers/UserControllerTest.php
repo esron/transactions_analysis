@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     protected User $user;
 
@@ -150,5 +150,21 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(302)
             ->assertInvalid($errors);
+    }
+
+    public function testCanEditAnUser()
+    {
+        $user = User::factory()->create();
+        $data = [
+            'name' => 'New name',
+            'email' => $this->faker->safeEmail(),
+        ];
+        $response = $this->actingAs($this->user)
+            ->put("/users/{$user->id}", $data);
+
+        $response->assertStatus(302)
+            ->assertValid();
+
+        $this->assertDatabaseHas('users', $data);
     }
 }
