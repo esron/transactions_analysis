@@ -115,4 +115,15 @@ class UserControllerTest extends TestCase
             return $mail->hasTo($userData->email);
         });
     }
+
+    public function testCanSeeTheUserEditForm()
+    {
+        $user = User::factory()->create();
+        $response = $this->actingAs($this->user)
+            ->get("/users/{$user->id}/edit");
+
+        $response->assertStatus(200)
+            ->assertSee('EDITAR USUÁRIO')
+            ->assertSee('Salvar');
+    }
 }
