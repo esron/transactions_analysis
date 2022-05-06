@@ -48,6 +48,18 @@ class UserControllerTest extends TestCase
             ->assertInvalid([
                 'email' => 'The email has already been taken.',
             ]);
+
+        $user = User::factory()->create();
+        $response = $this->actingAs($this->user)
+            ->put("/users/{$user->id}", [
+                'name' => 'Real Name',
+                'email' => $this->user->email,
+            ]);
+
+        $response->assertStatus(302)
+            ->assertInvalid([
+                'email' => 'The email has already been taken.',
+            ]);
     }
 
     /**
@@ -125,5 +137,18 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertSee('EDITAR USUÁRIO')
             ->assertSee('Salvar');
+    }
+
+    /**
+     * @dataProvider validationErrorsProvider
+     */
+    public function testEditUserValidations(array $data, array $errors)
+    {
+        $user = User::factory()->create();
+        $response = $this->actingAs($this->user)
+            ->put("/users/{$user->id}", $data);
+
+        $response->assertStatus(302)
+            ->assertInvalid($errors);
     }
 }
