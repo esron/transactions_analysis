@@ -152,6 +152,25 @@ class UserControllerTest extends TestCase
             ->assertInvalid($errors);
     }
 
+    public function testReturnsErrorIfTryToEditTheAdminUser()
+    {
+        $adminUser = User::factory()->create(['email' => env('ADMIN_EMAIL')]);
+        $response = $this->actingAs($this->user)
+            ->put("/users/{$adminUser->id}", [
+                'name' => 'New name',
+                'email' => 'email@test.com',
+            ]);
+
+        $response->assertStatus(403)
+            ->assertSee("O usuário $adminUser->name não pode ser editado");
+
+            $response = $this->actingAs($this->user)
+            ->delete("/users/{$adminUser->id}");
+
+        $response->assertStatus(403)
+            ->assertSee("O usuário $adminUser->name não pode ser excluído");
+    }
+
     public function testCanEditAnUser()
     {
         $user = User::factory()->create();
