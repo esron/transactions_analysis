@@ -186,4 +186,20 @@ class UserControllerTest extends TestCase
 
         $this->assertDatabaseHas('users', $data);
     }
+
+    public function testCanDeleteAnUser()
+    {
+        $user = User::factory()->create();
+        $data = [
+            'name' => 'New name',
+            'email' => $this->faker->safeEmail(),
+        ];
+        $response = $this->actingAs($this->user)
+            ->delete("/users/{$user->id}");
+
+        $response->assertStatus(302)
+            ->assertValid();
+
+        $this->assertDatabaseMissing('users', $data);
+    }
 }
