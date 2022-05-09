@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Import;
+use App\Services\CSVImportFileIterator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
@@ -47,7 +48,7 @@ class CSVUploadRequest extends FormRequest
             if ($this->file === null) {
                 return false;
             }
-            $path = Storage::disk($this->fileDisk)
+            Storage::disk($this->fileDisk)
                 ->put($this->file->hashName(), $this->file->get());
             $validationResponse = $this->validateCSV($this->file->path(), $validator);
             if ($validationResponse === false) {
@@ -65,13 +66,8 @@ class CSVUploadRequest extends FormRequest
      */
     private function validateCSV(string $path, Validator $validator): array|bool
     {
-        if (($handler = fopen($path, 'r')) === false) {
-            Log::error("Failed to open file in $path");
-            return false;
-        }
-        if (($firstLine = fgetcsv($handler, 1000)) === false) {
-            return false;
-        }
+        $csvFileIterator = new CSVImportFileIterator($path);
+        $firstLine = $csvFileIterator->current();
         $lineNumber = 1;
         $date = $this->getDateFromLine($firstLine, $validator, $lineNumber);
         if ($date === false) {
@@ -82,7 +78,8 @@ class CSVUploadRequest extends FormRequest
         }
         $this->merge(['date' => $date]);
         $lines = [$firstLine];
-        while (($line = fgetcsv($handler, 1000)) !== false) {
+        $csvFileIterator->next();
+        foreach ($csvFileIterator as $line) {
             $lineNumber++;
             $date = $this->getDateFromLine($line, $validator, $lineNumber);
             $isSameDay = $date->isSameDay($this->date);
@@ -96,7 +93,6 @@ class CSVUploadRequest extends FormRequest
             $lines[] = $line;
             Log::info(join(',', $line));
         }
-        fclose($handler);
         return $lines;
     }
 
