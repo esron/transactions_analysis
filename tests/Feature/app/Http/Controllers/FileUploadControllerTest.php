@@ -57,7 +57,7 @@ class FileUploadControllerTest extends TestCase
     {
         $disk = 'temp';
         Storage::fake($disk);
-        $file = UploadedFile::fake()->createWithContent('virus.exe', 'Hello world!');
+        $file = UploadedFile::fake()->createWithContent('virus.csv', 'Hello world!');
         $response = $this->actingAs($this->user)->post('/file-upload', [
             'file' => $file,
         ]);
