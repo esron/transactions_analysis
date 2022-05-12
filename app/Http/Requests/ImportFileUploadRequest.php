@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Import;
 use App\Services\CSVImportFileIterator;
+use App\Services\XMLImportFileIterator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Validator;
 
-class CSVUploadRequest extends FormRequest
+class ImportFileUploadRequest extends FormRequest
 {
     protected $fileDisk = 'temp';
 
@@ -50,7 +51,11 @@ class CSVUploadRequest extends FormRequest
             }
             Storage::disk($this->fileDisk)
                 ->put($this->file->hashName(), $this->file->get());
-            $validationResponse = $this->validateCSV($this->file->path(), $validator);
+            $validationResponse = $this->validateFile(
+                $this->file->getClientOriginalExtension(),
+                $this->file->path(),
+                $validator
+            );
             if ($validationResponse === false) {
                 $validator->errors()
                     ->add('file', "Failed processing {$this->file->getClientOriginalName()}");
@@ -64,9 +69,17 @@ class CSVUploadRequest extends FormRequest
      * Return the csv file as an array or false if it fails to.
      * Adds the validation errors to $validator
      */
-    private function validateCSV(string $path, Validator $validator): array|bool
+    private function validateFile(string $type, string $path, Validator $validator): array|bool
     {
-        $csvFileIterator = new CSVImportFileIterator($path);
+        dump($type);
+        $csvFileIterator = match ($type) {
+            'csv' => new CSVImportFileIterator($path),
+            'xml' => new XMLImportFileIterator($path),
+            default => null,
+        };
+        if ($csvFileIterator == null) {
+            return false;
+        }
         $firstLine = $csvFileIterator->current();
         $lineNumber = 1;
         $date = $this->getDateFromLine($firstLine, $validator, $lineNumber);
