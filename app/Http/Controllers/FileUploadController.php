@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CSVUploadRequest;
+use App\Http\Requests\ImportFileUploadRequest;
 use App\Models\Account;
 use App\Models\Import;
 use App\Models\Transaction;
@@ -17,7 +17,7 @@ class FileUploadController extends Controller
         return $megabytes / (1e6);
     }
 
-    public function store(CSVUploadRequest $request)
+    public function store(ImportFileUploadRequest $request)
     {
         $file = $request->validated()['file'];
         $csv_lines = $request->get('file');
