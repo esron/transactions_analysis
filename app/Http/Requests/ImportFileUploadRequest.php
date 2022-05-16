@@ -71,7 +71,6 @@ class ImportFileUploadRequest extends FormRequest
      */
     private function validateFile(string $type, string $path, Validator $validator): array|bool
     {
-        dump($type);
         $csvFileIterator = match ($type) {
             'csv' => new CSVImportFileIterator($path),
             'xml' => new XMLImportFileIterator($path),
