@@ -29,4 +29,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
     Route::get('/transactions/{import}', [TransactionController::class, 'index'])->name('transactions.index');
     Route::get('/suspect-transactions', [SuspectTransactionsController::class, 'index']);
+    Route::post('/suspect-transactions', [SuspectTransactionsController::class, 'suspectTransactions']);
 });
