@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SuspectTransactionsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/file-upload', [FileUploadController::class, 'store'])->name('file/upload');
     Route::resource('users', UserController::class)->except(['show']);
     Route::get('/transactions/{import}', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/suspect-transactions', [SuspectTransactionsController::class, 'index']);
 });
