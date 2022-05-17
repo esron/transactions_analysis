@@ -28,4 +28,23 @@ class SuspectTransactionsControllerTest extends TestCase
             ->assertSee('form')
             ->assertSee('Selecione o mês para analisar as transações');
     }
+
+    public function testAnalysisFormValidationsWorks()
+    {
+        $response = $this->actingAs($this->user)->post('/suspect-transactions');
+
+        $response->assertStatus(302)
+            ->assertInvalid([
+                'date' => 'The date field is required.',
+            ]);
+
+        $response = $this->actingAs($this->user)->post('/suspect-transactions', [
+            'date' => 'invalid format',
+        ]);
+
+        $response->assertStatus(302)
+            ->assertInvalid([
+                'date' => 'The date is not a valid date.',
+            ]);
+    }
 }
