@@ -10,4 +10,11 @@ class SuspectTransactionsController extends Controller
     {
         return view('components.transactions.suspect.index');
     }
+
+    public function suspectTransactions(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+    }
 }
