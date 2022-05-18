@@ -23,6 +23,9 @@
                     <li class="nav-item">
                         <a class="nav-link @if(Route::currentRouteName() == 'users.index') active @endif" href="{{ route('users.index') }}">Usuários</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if(Route::currentRouteName() == 'suspect_transactions.index') active @endif" href="{{ route('suspect_transactions.index') }}">Transações Suspeitas</a>
+                    </li>
                 </ul>
                 <form class="d-flex" method="POST" action="{{ route('logout') }}">
                     @csrf
