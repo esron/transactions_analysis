@@ -8,7 +8,9 @@ class SuspectTransactionsController extends Controller
 {
     public function index(Request $request)
     {
-        return view('components.transactions.suspect.index');
+        return view('components.transactions.suspect.index', [
+            'transactions' => collect(),
+        ]);
     }
 
     public function suspectTransactions(Request $request)
