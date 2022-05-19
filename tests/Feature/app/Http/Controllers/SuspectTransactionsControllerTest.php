@@ -27,7 +27,9 @@ class SuspectTransactionsControllerTest extends TestCase
             ->assertSee('ANÁLISE DE TRANSAÇÕES SUSPEITAS')
             ->assertSee('form')
             ->assertSee('Selecione o mês para analisar as transações')
-            ->assertSee('Nenhuma transação encontrada');
+            ->assertSee('Nenhuma transação encontrada')
+            ->assertSee('Selecione o mês para analisar as transações')
+            ->assertSee('Selecione o ano para analisar as transações');
     }
 
     public function testAnalysisFormValidationsWorks()
