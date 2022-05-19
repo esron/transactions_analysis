@@ -26,7 +26,8 @@ class SuspectTransactionsControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertSee('ANÁLISE DE TRANSAÇÕES SUSPEITAS')
             ->assertSee('form')
-            ->assertSee('Selecione o mês para analisar as transações');
+            ->assertSee('Selecione o mês para analisar as transações')
+            ->assertSee('Nenhuma transação encontrada');
     }
 
     public function testAnalysisFormValidationsWorks()
@@ -47,4 +48,9 @@ class SuspectTransactionsControllerTest extends TestCase
                 'date' => 'The date is not a valid date.',
             ]);
     }
+
+    // public function testWithoutAnyTransactionsShowsTheCorrectMessage()
+    // {
+    //     $response = $this->actingAs($this->user)->
+    // }
 }
