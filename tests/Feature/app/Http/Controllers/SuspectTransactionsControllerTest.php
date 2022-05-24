@@ -38,21 +38,30 @@ class SuspectTransactionsControllerTest extends TestCase
 
         $response->assertStatus(302)
             ->assertInvalid([
-                'date' => 'The date field is required.',
+                'month' => 'The month field is required.',
+                'year' => 'The year field is required.',
             ]);
 
         $response = $this->actingAs($this->user)->post('/suspect-transactions', [
-            'date' => 'invalid format',
+            'month' => 'invalid format',
+            'year' => 'invalid format'
         ]);
 
         $response->assertStatus(302)
             ->assertInvalid([
-                'date' => 'The date is not a valid date.',
+                'month' => 'The month does not match the format m.',
+                'year' => 'The year does not match the format Y.',
             ]);
     }
 
-    // public function testWithoutAnyTransactionsShowsTheCorrectMessage()
-    // {
-    //     $response = $this->actingAs($this->user)->
-    // }
+    public function testCanSeeSuspectTransactions()
+    {
+        $response = $this->actingAs($this->user)->post('/suspect-transactions', [
+            'month' => '01',
+            'year' => '2021',
+        ]);
+
+        $response->assertStatus(200)
+            ->assertValid();
+    }
 }
