@@ -16,7 +16,8 @@ class SuspectTransactionsController extends Controller
     public function suspectTransactions(Request $request)
     {
         $request->validate([
-            'date' => 'required|date',
+            'month' => 'required|date_format:m',
+            'year' => 'required|date_format:Y',
         ]);
     }
 }
